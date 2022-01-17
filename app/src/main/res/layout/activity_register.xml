@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity"
+    android:background="@drawable/gradient_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="E-mail"
+            android:textColorHint="@color/black"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:background="@drawable/rounder_edittext"
+            android:fontFamily="sans-serif"
+
+            android:inputType="textEmailAddress" />
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="Password"
+            android:gravity="center"
+            android:textColorHint="@color/black"
+            android:fontFamily="sans-serif"
+            android:background="@drawable/rounder_edittext"
+            android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/editTextRepeatPassword"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:hint="Repeat Password"
+            android:gravity="center"
+            android:textColorHint="@color/black"
+            android:fontFamily="sans-serif"
+            android:background="@drawable/rounder_edittext"
+            android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/editTextPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="Phone Number"
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/black"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:background="@drawable/rounder_edittext"
+            android:fontFamily="sans-serif"
+            />
+        <RadioGroup
+            android:id="@+id/radioSex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif"
+                />
+
+            <RadioButton
+                android:id="@+id/radioFemale"
+                android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif"
+                android:layout_height="wrap_content"
+                android:text="Female" />
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_height="60dp"
+            android:backgroundTint="#4CAF50"
+            android:layout_width="match_parent"
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"
+            android:text="Register" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
