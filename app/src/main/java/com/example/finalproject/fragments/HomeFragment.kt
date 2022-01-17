@@ -26,18 +26,25 @@ class HomeFragment: Fragment(R.layout.fragment_one) {
 
     private lateinit var buttonLogout: Button
     private lateinit var buttonPasswordChange:Button
-    private  lateinit var userImage: ImageView
-    private lateinit var textViewUsername: TextView
     private lateinit var progressBar: ProgressBar
-    private lateinit var editTextUsername: EditText
-    private lateinit var editTextImageUrl: EditText
-    private lateinit var buttonSave: Button
+    private lateinit var userImage: ImageView
+    private lateinit var userName: TextView
+    private lateinit var userSurname: TextView
+    private lateinit var userPhoneNumber: TextView
+    private lateinit var userEmailAddress: TextView
+    private lateinit var mainLinearLayout: LinearLayout
+    private lateinit var linearLayout: LinearLayout
+    private lateinit var userPassword: TextView
+    private lateinit var buttonShowPassword: Button
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
 
         init()
+
+        progressBar.visibility = View.VISIBLE
         registerListeners()
 
         database.child(auth.currentUser?.uid!!).addValueEventListener(object : ValueEventListener{
@@ -45,11 +52,20 @@ class HomeFragment: Fragment(R.layout.fragment_one) {
 
                 val userInfo = snapshot.getValue(UserInfo::class.java) ?: return
 
-                textViewUsername.text = userInfo.userName
+                userName.text = userInfo.name
+                userSurname.text = userInfo.surname
+                userPhoneNumber.text = userInfo.phoneNumber
+                userEmailAddress.text = userInfo.email
+                userPassword.text = userInfo.password
 
                 Glide.with(this@HomeFragment)
                     .load(userInfo.imageUrl)
                     .into(userImage)
+
+
+                progressBar.visibility = View.GONE
+                mainLinearLayout.visibility = View.VISIBLE
+                linearLayout.visibility = View.VISIBLE
 
             }
 
@@ -59,25 +75,26 @@ class HomeFragment: Fragment(R.layout.fragment_one) {
 
         })
 
-        progressBar.visibility = View.VISIBLE
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            progressBar.visibility = View.GONE
-        }, 2500)
-
-        saveUserInfoListener()
+        buttonShowPassword.setOnClickListener{
+            userPassword.setBackgroundResource(R.drawable.gradient_background)
+        }
 
     }
 
     private fun init(){
         buttonLogout = view?.findViewById(R.id.buttonLogout)!!
         buttonPasswordChange = view?.findViewById(R.id.buttonPasswordChange)!!
-        userImage = view?.findViewById(R.id.userImage)!!
-        textViewUsername = view?.findViewById(R.id.textViewUsername)!!
-        editTextUsername = view?.findViewById(R.id.editTextUsername)!!
-        editTextImageUrl = view?.findViewById(R.id.editTextImageUrl)!!
-        buttonSave = view?.findViewById(R.id.buttonSave)!!
         progressBar = view?.findViewById(R.id.progressBar)!!
+        userName = view?.findViewById(R.id.userName)!!
+        userSurname = view?.findViewById(R.id.userSurname)!!
+        userPhoneNumber = view?.findViewById(R.id.userPhoneNumber)!!
+        userEmailAddress = view?.findViewById(R.id.userEmailAddress)!!
+        userImage = view?.findViewById(R.id.userImage)!!
+        linearLayout = view?.findViewById(R.id.linearLayout)!!
+        mainLinearLayout = view?.findViewById(R.id.mainLinearLayout)!!
+        userPassword = view?.findViewById(R.id.userPassword)!!
+        buttonShowPassword = view?.findViewById(R.id.buttonShowPassword)!!
+
 
     }
 
@@ -93,33 +110,6 @@ class HomeFragment: Fragment(R.layout.fragment_one) {
         buttonPasswordChange.setOnClickListener{
             val intent = Intent(activity,PasswordChangeActivity::class.java)
             startActivity(intent)
-        }
-    }
-
-    private fun saveUserInfoListener(){
-        buttonSave.setOnClickListener{
-
-
-
-            val username = editTextUsername.text.trim().toString()
-            val url = editTextImageUrl.text.trim().toString()
-
-            if(username.isEmpty() || url.isEmpty()){
-                Toast.makeText(activity, "Values mustn't be empty!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            progressBar.visibility = View.VISIBLE
-
-            val userInfo = UserInfo(username,url)
-            hideKeyBoard()
-
-            editTextUsername.setText("")
-            editTextImageUrl.setText("")
-
-            database.child(auth.currentUser?.uid!!).setValue(userInfo).addOnCompleteListener{
-                progressBar.visibility = View.GONE
-            }
-
         }
     }
 
