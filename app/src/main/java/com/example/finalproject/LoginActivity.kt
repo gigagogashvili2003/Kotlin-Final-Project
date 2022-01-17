@@ -68,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
                         gotoProfile()
                         Toast.makeText(this,"Welcome", Toast.LENGTH_SHORT).show()
                     }else{
-                        Toast.makeText(this,"Something Went Wrong!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Email or password isn't correct!", Toast.LENGTH_SHORT).show()
                     }
                 }
 

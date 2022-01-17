@@ -3,14 +3,21 @@ package com.example.finalproject
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
+
+    private val auth = FirebaseAuth.getInstance()
+    private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("UserInfo")
+
 
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
@@ -19,6 +26,9 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var buttonRegister: Button
     private lateinit var radioMale: RadioButton
     private lateinit var radioFemale: RadioButton
+    private lateinit var editTextName: EditText
+    private lateinit var editTextSurname: EditText
+    private lateinit var editTextImageUrl: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +47,10 @@ class RegisterActivity : AppCompatActivity() {
         buttonRegister = findViewById(R.id.buttonRegister)
         radioMale = findViewById(R.id.radioMale)
         radioFemale = findViewById(R.id.radioFemale)
+        editTextName = findViewById(R.id.editTextName)
+        editTextSurname = findViewById(R.id.editTextSurname)
+        editTextImageUrl = findViewById(R.id.editTextImageUrl)
+
     }
 
     private fun registerListeners(){
@@ -45,6 +59,9 @@ class RegisterActivity : AppCompatActivity() {
             val password = editTextPassword.text.toString()
             val repeatPassword = editTextRepeatPassword.text.toString()
             val phoneNumber = editTextPhoneNumber.text.toString()
+            val name = editTextName.text.trim().toString()
+            val surname = editTextSurname.text.trim().toString()
+            val image = editTextImageUrl.text.trim().toString()
 
             if(email.trim().length < 6 || !email.contains("@")){
                 Toast.makeText(this,"Email Must be length of 6 or more, and also must contain @", Toast.LENGTH_LONG).show()
@@ -71,12 +88,26 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if(name.isEmpty()){
+                Toast.makeText(this, "Name field is empty!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(surname.isEmpty()){
+                Toast.makeText(this, "Name field is empty!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            if(image.isEmpty()){
+                Toast.makeText(this, "Image field is empty!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             FirebaseAuth.getInstance()
                 .createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener{task ->
                     if(task.isSuccessful){
+                        val userInfo = UserInfo(name,surname,phoneNumber,email, image,password)
+                        database.child(auth.currentUser?.uid!!).setValue(userInfo)
                         val intent = Intent(this,LoginActivity::class.java)
                         startActivity(intent)
                         finish()
